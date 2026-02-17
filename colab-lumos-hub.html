@@ -971,29 +971,31 @@
 
   
   function buildLeaderboard() {
-    const tbody = document.getElementById('leaderboard-body');
-    tbody.innerHTML = '';
+  const tbody = document.getElementById('leaderboard-body');
+  if (!tbody) return; // Not on dashboard yet
+  
+  tbody.innerHTML = '';
 
-    const sorted = [...LEADERBOARD].sort((a,b) => b.completed - a.completed);
+  const sorted = [...LEADERBOARD].sort((a,b) => b.completed - a.completed);
 
-    sorted.forEach(h => {
-      const dots = Array(5).fill(0).map((_, i) => `
-        <div class="dot ${i < h.completed ? 'filled' : ''}"></div>
-      `).join('');
+  sorted.forEach(h => {
+    const dots = Array(5).fill(0).map((_, i) => `
+      <div class="dot ${i < h.completed ? 'filled' : ''}"></div>
+    `).join('');
 
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <span class="house-badge">${h.glyph} House ${h.house}</span>
-        </td>
-        <td><div class="progress-dots">${dots}</div></td>
-        <td style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px">
-          ${h.completed === 5 ? '<span style="color:var(--gold)">✦ COMPLETE</span>' : `${h.completed} / 5`}
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <span class="house-badge">${h.glyph} House ${h.house}</span>
+      </td>
+      <td><div class="progress-dots">${dots}</div></td>
+      <td style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px">
+        ${h.completed === 5 ? '<span style="color:var(--gold)">✦ COMPLETE</span>' : `${h.completed} / 5`}
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
 
   //this da passcode gurl allat of nothing imagine they cant solve imcr
 
@@ -1131,28 +1133,31 @@
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbze5HhXadEP-HXkMSarCAxgLTlSDLeQuvhidpwYRO5shYUBqXggIG6KvZodT4VrFhSC/exec";
 
   async function fetchLeaderboard() {
-    if (!APPS_SCRIPT_URL) return; 
+  if (!APPS_SCRIPT_URL) return;
+  //this one i need to update global leaderboard with za fresh data
+  try {
+    const response = await fetch(APPS_SCRIPT_URL);
+    const data = await response.json();
     
-    try {
-      const response = await fetch(APPS_SCRIPT_URL);
-      const data = await response.json();
-      
-      if (data.leaderboard) {
-        //this one i need to update global leaderboard with za fresh data
-        data.leaderboard.forEach(item => {
-          const existing = LEADERBOARD.find(h => h.house === item.house);
-          if (existing) {
-            existing.completed = item.completed;
-          }
+    if (data.leaderboard) {
+      // Clear and rebuild LEADERBOARD array
+      LEADERBOARD.length = 0;
+      data.leaderboard.forEach(item => {
+        LEADERBOARD.push({
+          house: item.house,
+          glyph: "",
+          completed: item.completed
         });
-        
-        buildLeaderboard();
-      }
-    } catch (err) {
-      console.warn('Could not fetch leaderboard:', err);
+      });
+      
+      // Force rebuild
+      buildLeaderboard();
     }
+  } catch (err) {
+    console.error('Leaderboard fetch error:', err);
   }
-
+}
+      
   // Auto-refresh every 10 seconds
   setInterval(fetchLeaderboard, 10000);
   // Fetch once on load
