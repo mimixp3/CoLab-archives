@@ -30,12 +30,12 @@
       cursor: default;
     }
 
-    /* ── PARTICLE CANVAS ── */
+    /*  PARTICLE CANVAS */
     #particles {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
     }
 
-    /* ── NOISE OVERLAY ── */
+    /* gurl */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -44,7 +44,6 @@
       pointer-events: none; z-index: 1; opacity: 0.4;
     }
 
-    /* ── VIGNETTE ── */
     body::after {
       content: '';
       position: fixed; inset: 0;
@@ -93,7 +92,7 @@
       margin-bottom: 10px;
     }
 
-    /* ── PROGRESSIVE LETTER REVEAL ── */
+    /* LETTER REVEAL cus we fancy */
     .letter-row {
       display: flex;
       justify-content: center;
@@ -275,7 +274,7 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-
+    /*lowkey sleepy rn i miss jimin*/
     .house-card:hover::after,
     .house-card.selected::after { opacity: 1; }
 
@@ -366,7 +365,7 @@
       cursor: not-allowed;
     }
 
-    /* ── DASHBOARD (hidden by default) ── */
+    /* DASHBOARD (hidden by default) */
     #dashboard { display: none; }
 
     .welcome-banner {
@@ -697,10 +696,8 @@
     <em>Choose your house, find the scrolls, and begin.</em>
   </p>
 
-  <!-- PANELS -->
   <div class="panels">
 
-    <!-- HOUSE LOGIN -->
     <div class="panel" id="login-panel">
       <div class="panel-header">
         <span class="panel-icon">🏠</span>
@@ -735,10 +732,8 @@
       </div>
     </div>
 
-    <!-- DASHBOARD (shown after login) -->
     <div id="dashboard">
 
-      <!-- Welcome Banner -->
       <div class="panel" style="animation-delay:0.1s">
         <div class="welcome-banner">
           <div class="welcome-house" id="house-display">House —</div>
@@ -752,7 +747,6 @@
         </div>
       </div>
 
-      <!-- Leaderboard -->
       <div class="panel" style="animation-delay:0.2s">
         <div class="panel-header">
           <span class="panel-icon">📜</span>
@@ -768,13 +762,11 @@
               </tr>
             </thead>
             <tbody id="leaderboard-body">
-              <!-- Populated by JS -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Final Passcode -->
       <div class="panel" style="animation-delay:0.3s">
         <div class="panel-header">
           <span class="panel-icon">🕯️</span>
@@ -796,16 +788,14 @@
             <button class="cast-btn" onclick="castSpell()">Cast</button>
           </div>
           <p class="passcode-error" id="passcode-error">
-            ✗ &nbsp; The archives remain sealed. Try again.
+            ✗ &nbsp; The archives remain sealed. Try again. 
           </p>
         </div>
       </div>
 
     </div>
-    <!-- end dashboard -->
 
   </div>
-  <!-- end panels -->
 
   <div class="footer">
     <div class="scroll-decoration">📜 ⚡ 📜</div>
@@ -814,9 +804,7 @@
   </div>
 
 </div>
-<!-- end wrapper -->
 
-<!-- WIN SCREEN -->
 <div id="win-screen">
   <canvas class="win-sparks" id="win-sparks"></canvas>
   <div class="win-glyph">🕯️</div>
@@ -826,16 +814,13 @@
 </div>
 
 <script>
-  // ─────────────────────────────────────────────
-  // CONFIG — Edit these as the game progresses
-  // ─────────────────────────────────────────────
   const CHALLENGES = [
     {
       id: 1,
       name: "The Hidden Scroll",
-      desc: "Something lies beneath the surface. Look closer.",
+      desc: "Something lies beneath the surface. Look closer.", //CORNYYYYYYYYYYYYYYYYYY i cant do this bruv
       letter: "L",
-      link: "#challenge-1-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      link: "https://github.com/mimixp3/CoLab-archives/blob/main/challenge-1-hidden-scroll.html",
       unlocked: true,
     },
     {
@@ -843,15 +828,15 @@
       name: "The Enchanted Image",
       desc: "Not everything is as it appears.",
       letter: "U",
-      link: "#challenge-2-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      link: "https://github.com/mimixp3/CoLab-archives/blob/main/challenge-2-enchanted-image.html",
       unlocked: false,
     },
     {
       id: 3,
       name: "The Cipher of Ages",
-      desc: "Ancient languages hide ancient truths.",
+      desc: "Ancient languages hide ancient truths.", //gurl shut up
       letter: "M",
-      link: "#challenge-3-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      link: "https://github.com/mimixp3/CoLab-archives/blob/main/challenge-3-cipher-of-ages.html",
       unlocked: false,
     },
     {
@@ -859,20 +844,21 @@
       name: "The API Oracle",
       desc: "Ask the right question. Receive the truth.",
       letter: "O",
-      link: "#challenge-4-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      link: "https://github.com/mimixp3/CoLab-archives/blob/main/challenge-4-api-oracle.html",
       unlocked: false,
     },
     {
-      id: 5,
+      id: 5, 
       name: "The Colab Convergence",
-      desc: "All paths lead here. All skills required.",
+      desc: "All paths lead here. All skills required.", //rightt they gonna compplain abt why we gawt data structures here too
+      
       letter: "S",
-      link: "#challenge-5-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      link: "https://github.com/mimixp3/CoLab-archives/blob/main/challenge-5-colab-convergence.html",
       unlocked: false,
     },
   ];
 
-  // Fake leaderboard data (replace with Google Sheets integration later)
+  //will replace later with google sheets api DONT FORGET GURL
   const LEADERBOARD = [
     { house: "Nexus",  glyph: "", completed: 0 },
     { house: "Cipher", glyph: "", completed: 0 },
@@ -884,15 +870,11 @@
   const PASSCODE = "LUMOS";
   const LETTERS = ["L", "U", "M", "O", "S"];
 
-  // ─────────────────────────────────────────────
-  // STATE
-  // ─────────────────────────────────────────────
-  let selectedHouse = null;
-  let completedChallenges = [];  // e.g. [1, 2] means challenges 1 & 2 done
 
-  // ─────────────────────────────────────────────
-  // LETTER REVEAL
-  // ─────────────────────────────────────────────
+  let selectedHouse = null;
+  let completedChallenges = []; 
+
+
   function updateLetterSlots() {
     LETTERS.forEach((letter, i) => {
       const slot = document.getElementById(`slot-${i}`);
@@ -909,12 +891,11 @@
     });
   }
 
-  // Call on page load to reflect any saved state
+  //need to call page load to save states
   updateLetterSlots();
 
-  // ─────────────────────────────────────────────
-  // HOUSE SELECTION
-  // ─────────────────────────────────────────────
+
+  
   function selectHouse(el, name) {
     document.querySelectorAll('.house-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
@@ -925,7 +906,6 @@
   function enterArchives() {
     if (!selectedHouse) return;
 
-    // Hide login, show dashboard
     document.getElementById('login-panel').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('house-display').textContent = `House ${selectedHouse}`;
@@ -935,11 +915,10 @@
     updateLetterSlots();
   }
 
-  // ─────────────────────────────────────────────
-  // MARK CHALLENGE COMPLETE (call this manually
-  // or hook to your Google Form webhook later)
-  // e.g. markComplete(1) after Challenge 1 done
-  // ─────────────────────────────────────────────
+
+
+
+  
   function markComplete(challengeId) {
     if (!completedChallenges.includes(challengeId)) {
       completedChallenges.push(challengeId);
@@ -948,9 +927,10 @@
     }
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD CHALLENGES
-  // ─────────────────────────────────────────────
+
+
+
+  
   function buildChallenges() {
     const list = document.getElementById('challenge-list');
     list.innerHTML = '';
@@ -987,9 +967,9 @@
     }
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD LEADERBOARD
-  // ─────────────────────────────────────────────
+
+
+  
   function buildLeaderboard() {
     const tbody = document.getElementById('leaderboard-body');
     tbody.innerHTML = '';
@@ -1015,9 +995,8 @@
     });
   }
 
-  // ─────────────────────────────────────────────
-  // PASSCODE
-  // ─────────────────────────────────────────────
+  //this da passcode gurl allat of nothing imagine they cant solve imcr
+
   function castSpell() {
     const input = document.getElementById('passcode-input').value.trim().toUpperCase();
     const error = document.getElementById('passcode-error');
@@ -1040,9 +1019,9 @@
     }
   });
 
-  // ─────────────────────────────────────────────
-  // WIN
-  // ─────────────────────────────────────────────
+
+
+  
   function triggerWin() {
     const screen = document.getElementById('win-screen');
     screen.classList.add('show');
@@ -1074,7 +1053,7 @@
 
     function animate() {
       ctx.fillStyle = 'rgba(0,0,0,0.15)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvas.width, canvas.height); //mama whats gewd 
 
       particles.forEach((p, i) => {
         p.x += p.vx;
@@ -1097,9 +1076,9 @@
     animate();
   }
 
-  // ─────────────────────────────────────────────
-  // FLOATING PARTICLES BACKGROUND
-  // ─────────────────────────────────────────────
+
+
+  
   (function initParticles() {
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
@@ -1145,9 +1124,10 @@
     draw();
   })();
 
-  // ─────────────────────────────────────────────
-  // GOOGLE SHEETS LIVE SYNC
-  // ─────────────────────────────────────────────
+
+
+
+  
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbze5HhXadEP-HXkMSarCAxgLTlSDLeQuvhidpwYRO5shYUBqXggIG6KvZodT4VrFhSC/exec";
 
   async function fetchLeaderboard() {
@@ -1158,7 +1138,7 @@
       const data = await response.json();
       
       if (data.leaderboard) {
-        // Update global LEADERBOARD with fresh data
+        //this one i need to update global leaderboard with za fresh data
         data.leaderboard.forEach(item => {
           const existing = LEADERBOARD.find(h => h.house === item.house);
           if (existing) {
@@ -1166,7 +1146,6 @@
           }
         });
         
-        // Rebuild the leaderboard display
         buildLeaderboard();
       }
     } catch (err) {
@@ -1179,13 +1158,12 @@
   // Fetch once on load
   fetchLeaderboard();
 
-  // ─────────────────────────────────────────────
-  // ADMIN PANEL
-  // ─────────────────────────────────────────────
+  // ADMIN PANEL for nazla/farha need to enter it while changing after each tbh
   const ADMIN_PASSWORD = "mimi5813";
   let adminMode = false;
 
-  // Keyboard shortcut: Ctrl+Shift+A (or Cmd+Shift+A)
+
+  
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
       e.preventDefault();
@@ -1194,17 +1172,17 @@
   });
 
   function showAdminLogin() {
-    const password = prompt('🔐 Admin Access\nEnter password:');
+    const password = prompt('Admin Access\nEnter password:'); //so fancy ooouu im admin i get to put up a password
     if (password === ADMIN_PASSWORD) {
       adminMode = true;
       showAdminPanel();
     } else if (password !== null) {
-      alert('❌ Incorrect password');
+      alert('Incorrect password');
     }
   }
 
   function showAdminPanel() {
-    // Check if panel already exists
+    //gawta check if panel exist
     if (document.getElementById('admin-panel')) {
       document.getElementById('admin-panel').style.display = 'block';
       return;
@@ -1236,7 +1214,10 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
     `;
 
-    // Challenge unlock controls
+
+    
+    
+    
     CHALLENGES.forEach(ch => {
       const status = ch.unlocked ? 'UNLOCKED' : 'LOCKED';
       const color = ch.unlocked ? '#4aad4a' : '#ad4a4a';
@@ -1272,14 +1253,14 @@
     if (challenge) {
       challenge.unlocked = !challenge.unlocked;
       buildChallenges();
-      showAdminPanel(); // Refresh panel display
+      showAdminPanel(); 
     }
   }
 
   function resetAdmin() {
     if (confirm('⚠️ This will reset all challenge unlocks and completed challenges. Continue?')) {
       CHALLENGES.forEach(ch => {
-        if (ch.id !== 1) ch.unlocked = false; // Keep challenge 1 unlocked
+        if (ch.id !== 1) ch.unlocked = false; 
       });
       completedChallenges = [];
       updateLetterSlots();
