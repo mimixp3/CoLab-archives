@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Colab Archives — Season I</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --deep: #111111;
+      --parchment: #f5f0e8;
+      --parchment-dark: #e8e0cc;
+      --gold: #c9a84c;
+      --gold-light: #e8c96d;
+      --gold-dim: #7a6230;
+      --white: #faf8f4;
+      --ash: #888880;
+      --ember: #8b3a3a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--parchment);
+      font-family: 'EB Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── PARTICLE CANVAS ── */
+    #particles {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none; z-index: 1; opacity: 0.4;
+    }
+
+    /* ── VIGNETTE ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
+      pointer-events: none; z-index: 1;
+    }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      position: relative; z-index: 2;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px 80px;
+    }
+
+    /* ── HEADER ── */
+    .crest {
+      text-align: center;
+      margin-bottom: 12px;
+      animation: fadeDown 1.2s ease both;
+    }
+
+    .crest-symbol {
+      font-size: 48px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(201,168,76,0.6));
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.4)); }
+      50% { filter: drop-shadow(0 0 24px rgba(201,168,76,0.9)); }
+    }
+
+    .title-lockup {
+      text-align: center;
+      animation: fadeDown 1.4s ease both;
+    }
+
+    .title-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 6px;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* ── PROGRESSIVE LETTER REVEAL ── */
+    .letter-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 8px 0 4px;
+    }
+
+    .letter-slot {
+      width: clamp(48px, 9vw, 80px);
+      height: clamp(60px, 11vw, 96px);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s ease;
+    }
+
+    .letter-slot.revealed {
+      border-color: var(--gold);
+      box-shadow: 0 0 24px rgba(201,168,76,0.3), inset 0 0 20px rgba(201,168,76,0.05);
+    }
+
+    .letter-slot .glyph {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(26px, 5vw, 52px);
+      font-weight: 900;
+      line-height: 1;
+      transition: all 0.6s ease;
+    }
+
+    .letter-slot.locked .glyph {
+      color: rgba(201,168,76,0.15);
+      text-shadow: none;
+    }
+
+    .letter-slot.revealed .glyph {
+      color: var(--gold);
+      text-shadow:
+        0 0 20px rgba(201,168,76,0.9),
+        0 0 50px rgba(201,168,76,0.5);
+      animation: letterPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes letterPop {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .letter-slot::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+
+    .letter-slot.revealed::before { opacity: 1; }
+
+    .title-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ash);
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+
+    .divider {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; max-width: 600px;
+      margin: 28px auto;
+      animation: fadeIn 1.8s ease both;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    }
+
+    .divider-glyph {
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    /* ── LORE TEXT ── */
+    .lore {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--ash);
+      text-align: center;
+      max-width: 560px;
+      margin-bottom: 48px;
+      animation: fadeIn 2s ease both;
+    }
+
+    .lore strong {
+      color: var(--parchment);
+      font-style: normal;
+    }
+
+    /* ── PANELS ── */
+    .panels {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    /* ── HOUSE LOGIN ── */
+    .panel {
+      border: 1px solid rgba(201,168,76,0.2);
+      background: rgba(15,15,15,0.85);
+      backdrop-filter: blur(8px);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 1.6s ease both;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .panel-header {
+      padding: 20px 28px 16px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .panel-icon { font-size: 20px; }
+
+    .panel-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .panel-body { padding: 24px 28px 28px; }
+
+    /* ── HOUSE GRID ── */
+    .house-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .house-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .house-card {
+      border: 1px solid rgba(201,168,76,0.15);
+      background: rgba(201,168,76,0.04);
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .house-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .house-card:hover::after,
+    .house-card.selected::after { opacity: 1; }
+
+    .house-card:hover {
+      border-color: rgba(201,168,76,0.5);
+      transform: translateY(-2px);
+    }
+
+    .house-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      box-shadow: 0 0 20px rgba(201,168,76,0.2), inset 0 0 20px rgba(201,168,76,0.05);
+    }
+
+    .house-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 8px;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .house-card:hover .house-img,
+    .house-card.selected .house-img { opacity: 1; }
+
+    .house-img-placeholder {
+      width: 52px;
+      height: 52px;
+      border: 1px dashed rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-size: 9px;
+      color: rgba(201,168,76,0.3);
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+
+    .house-name {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--ash);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .house-card.selected .house-name { color: var(--gold); }
+
+    .enter-btn {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.08), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+
+    .enter-btn:hover::before { transform: translateX(100%); }
+
+    .enter-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+      box-shadow: 0 0 20px rgba(201,168,76,0.15);
+      letter-spacing: 6px;
+    }
+
+    .enter-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* ── DASHBOARD (hidden by default) ── */
+    #dashboard { display: none; }
+
+    .welcome-banner {
+      text-align: center;
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+
+    .welcome-house {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 22px;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(201,168,76,0.5);
+    }
+
+    .welcome-sub {
+      font-style: italic;
+      color: var(--ash);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* ── CHALLENGES ── */
+    .challenges { display: flex; flex-direction: column; gap: 12px; }
+
+    .challenge-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      border: 1px solid rgba(201,168,76,0.1);
+      background: rgba(10,10,10,0.6);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .challenge-row.unlocked {
+      cursor: pointer;
+      border-color: rgba(201,168,76,0.2);
+    }
+
+    .challenge-row.unlocked:hover {
+      border-color: rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.04);
+      transform: translateX(4px);
+    }
+
+    .challenge-row.locked { opacity: 0.4; cursor: not-allowed; }
+
+    .challenge-row.completed {
+      border-color: rgba(201,168,76,0.3);
+      background: rgba(201,168,76,0.05);
+    }
+
+    .ch-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 22px;
+      color: var(--gold-dim);
+      min-width: 36px;
+      text-align: center;
+    }
+
+    .challenge-row.completed .ch-num { color: var(--gold); }
+
+    .ch-info { flex: 1; }
+
+    .ch-name {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--parchment);
+      margin-bottom: 3px;
+    }
+
+    .ch-desc {
+      font-style: italic;
+      font-size: 13px;
+      color: var(--ash);
+    }
+
+    .ch-status {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border: 1px solid;
+    }
+
+    .status-locked { color: #444; border-color: #333; }
+    .status-open { color: var(--gold-dim); border-color: var(--gold-dim); }
+    .status-done { color: #4a8c4a; border-color: #4a8c4a; }
+
+    /* ── LEADERBOARD ── */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table th {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .leaderboard-table td {
+      padding: 12px 12px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--ash);
+    }
+
+    .leaderboard-table tr:first-child td { color: var(--gold); }
+    .leaderboard-table tr:first-child td:first-child::before { content: '✦ '; }
+
+    .house-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+    }
+
+    .progress-dots { display: flex; gap: 4px; }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.3);
+      background: transparent;
+    }
+    .dot.filled { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 6px rgba(201,168,76,0.5); }
+
+    /* ── FINAL PASSCODE ── */
+    .passcode-section {
+      text-align: center;
+    }
+
+    .passcode-lore {
+      font-style: italic;
+      color: var(--ash);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .passcode-input-wrap {
+      display: flex; gap: 0;
+      max-width: 380px;
+      margin: 0 auto 12px;
+    }
+
+    .passcode-input {
+      flex: 1;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-right: none;
+      color: var(--parchment);
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      outline: none;
+      text-align: center;
+    }
+
+    .passcode-input::placeholder {
+      color: rgba(201,168,76,0.2);
+      letter-spacing: 4px;
+      font-size: 12px;
+    }
+
+    .passcode-input:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+
+    .cast-btn {
+      padding: 14px 22px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold);
+      color: var(--black);
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 700;
+    }
+
+    .cast-btn:hover {
+      background: var(--gold);
+      box-shadow: 0 0 30px rgba(201,168,76,0.4);
+    }
+
+    .passcode-error {
+      color: var(--ember);
+      font-style: italic;
+      font-size: 13px;
+      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .passcode-error.show { opacity: 1; }
+
+    /* ── WIN SCREEN ── */
+    #win-screen {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.97);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #win-screen.show { display: flex; }
+
+    .win-glyph {
+      font-size: 80px;
+      animation: float 3s ease-in-out infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .win-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(36px, 8vw, 72px);
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(201,168,76,0.8), 0 0 80px rgba(201,168,76,0.4);
+      animation: pulse-glow 2s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+
+    .win-house {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      letter-spacing: 4px;
+      color: var(--parchment);
+      margin-bottom: 8px;
+    }
+
+    .win-sub {
+      font-style: italic;
+      color: var(--ash);
+      font-size: 16px;
+      max-width: 400px;
+    }
+
+    .win-sparks {
+      position: fixed; inset: 0; pointer-events: none;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-style: italic;
+      font-size: 12px;
+      color: #333;
+      animation: fadeIn 3s ease both;
+    }
+
+    .scroll-decoration {
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 8px;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="title-lockup">
+    <p class="title-eyebrow">The Colab Archives — Season I</p>
+    <div class="letter-row" id="letter-row">
+      <div class="letter-slot locked" id="slot-0"><span class="glyph">✦</span></div>
+      <div class="letter-slot locked" id="slot-1"><span class="glyph">✦</span></div>
+      <div class="letter-slot locked" id="slot-2"><span class="glyph">✦</span></div>
+      <div class="letter-slot locked" id="slot-3"><span class="glyph">✦</span></div>
+      <div class="letter-slot locked" id="slot-4"><span class="glyph">✦</span></div>
+    </div>
+    <p class="title-sub">Recover the scrolls. Illuminate the darkness.</p>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-glyph">✦</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <p class="lore">
+    Welcome to the <strong>CoLab Archives.</strong> Please settle into teams and follow the instructions!
+    Your tasks have been sealed by an unknown force and you must retrieve the five ancient scrolls
+    that hold the letters of a forgotten spell: the only incantation that restores the lost.
+    <em>Choose your house, find the scrolls, and begin.</em>
+  </p>
+
+  <!-- PANELS -->
+  <div class="panels">
+
+    <!-- HOUSE LOGIN -->
+    <div class="panel" id="login-panel">
+      <div class="panel-header">
+        <span class="panel-icon">🏠</span>
+        <span class="panel-title">Choose Your House</span>
+      </div>
+      <div class="panel-body">
+        <div class="house-grid">
+          <div class="house-card" onclick="selectHouse(this, 'Cipher')">
+            <img class="house-img" src="https://i.etsystatic.com/14618365/r/il/0c9fd1/2389088196/il_570xN.2389088196_blyj.jpg" alt="House Cipher"/>
+            <span class="house-name">Cipher</span>
+          </div>
+          <div class="house-card" onclick="selectHouse(this, 'Nexus')">
+            <img class="house-img" src="https://img.freepik.com/premium-photo/purple-blue-ice-crystals-glowing-dark-themepark_50206-1291.jpg" alt="House Nexus"/>
+            <span class="house-name">Nexus</span>
+          </div>
+          <div class="house-card" onclick="selectHouse(this, 'Arcane')">
+            <img class="house-img" src="https://www.thewandcompany.com/wp-content/uploads/2018/07/ST-ROCK-lit-blue-883x1024.jpg" alt="House Arcane"/>
+            <span class="house-name">Arcane</span>
+          </div>
+          <div class="house-card" onclick="selectHouse(this, 'Forge')">
+            <img class="house-img" src="https://www.thewandcompany.com/koken/i.php?/000/222/ST-ROCK-lit-red,medium.2x.1542122272.jpg" alt="House Forge"/>
+            <span class="house-name">Forge</span>
+          </div>
+          <div class="house-card" onclick="selectHouse(this, 'Lumina')">
+            <img class="house-img" src="https://www.thewandcompany.com/wp-content/uploads/2018/07/ST-ROCK-lit-yellow-883x1024.jpg" alt="House Lumina"/>
+            <span class="house-name">Lumina</span>
+          </div>
+        </div>
+        <button class="enter-btn" id="enter-btn" onclick="enterArchives()" disabled>
+          ✦ &nbsp; Enter the Archives &nbsp; ✦
+        </button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD (shown after login) -->
+    <div id="dashboard">
+
+      <!-- Welcome Banner -->
+      <div class="panel" style="animation-delay:0.1s">
+        <div class="welcome-banner">
+          <div class="welcome-house" id="house-display">House —</div>
+          <div class="welcome-sub">Your quest begins. Tread carefully.</div>
+        </div>
+
+        <div class="panel-body">
+          <div class="challenges" id="challenge-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="panel" style="animation-delay:0.2s">
+        <div class="panel-header">
+          <span class="panel-icon">📜</span>
+          <span class="panel-title">The Standing Scrolls</span>
+        </div>
+        <div class="panel-body">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>House</th>
+                <th>Scrolls Found</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Final Passcode -->
+      <div class="panel" style="animation-delay:0.3s">
+        <div class="panel-header">
+          <span class="panel-icon">🕯️</span>
+          <span class="panel-title">The Final Incantation</span>
+        </div>
+        <div class="panel-body passcode-section">
+          <p class="passcode-lore">
+            You have gathered the ancient letters.<br/>
+            Speak the spell. <em>Let there be light.</em>
+          </p>
+          <div class="passcode-input-wrap">
+            <input
+              type="text"
+              class="passcode-input"
+              id="passcode-input"
+              placeholder="_ _ _ _ _"
+              maxlength="5"
+            />
+            <button class="cast-btn" onclick="castSpell()">Cast</button>
+          </div>
+          <p class="passcode-error" id="passcode-error">
+            ✗ &nbsp; The archives remain sealed. Try again.
+          </p>
+        </div>
+      </div>
+
+    </div>
+    <!-- end dashboard -->
+
+  </div>
+  <!-- end panels -->
+
+  <div class="footer">
+    <div class="scroll-decoration">📜 ⚡ 📜</div>
+    Colab Archives — Season I &nbsp;·&nbsp; May the best house illuminate the darkness
+    <div style="margin-top:8px;opacity:0.1;font-size:8px;cursor:pointer;" onclick="showAdminLogin()" title="Admin Access">⚙</div>
+  </div>
+
+</div>
+<!-- end wrapper -->
+
+<!-- WIN SCREEN -->
+<div id="win-screen">
+  <canvas class="win-sparks" id="win-sparks"></canvas>
+  <div class="win-glyph">🕯️</div>
+  <div class="win-title">LUMOS</div>
+  <div class="win-house" id="win-house-name">House — has done it!</div>
+  <div class="win-sub">The Colab Archives are restored. The light returns.<br/><em>Your name shall echo through the halls of Colab forever.</em></div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // CONFIG — Edit these as the game progresses
+  // ─────────────────────────────────────────────
+  const CHALLENGES = [
+    {
+      id: 1,
+      name: "The Hidden Scroll",
+      desc: "Something lies beneath the surface. Look closer.",
+      letter: "L",
+      link: "#challenge-1-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      unlocked: true,
+    },
+    {
+      id: 2,
+      name: "The Enchanted Image",
+      desc: "Not everything is as it appears.",
+      letter: "U",
+      link: "#challenge-2-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      unlocked: false,
+    },
+    {
+      id: 3,
+      name: "The Cipher of Ages",
+      desc: "Ancient languages hide ancient truths.",
+      letter: "M",
+      link: "#challenge-3-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      unlocked: false,
+    },
+    {
+      id: 4,
+      name: "The API Oracle",
+      desc: "Ask the right question. Receive the truth.",
+      letter: "O",
+      link: "#challenge-4-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      unlocked: false,
+    },
+    {
+      id: 5,
+      name: "The Colab Convergence",
+      desc: "All paths lead here. All skills required.",
+      letter: "S",
+      link: "#challenge-5-link-goes-here",  // ← REPLACE WITH YOUR LINK
+      unlocked: false,
+    },
+  ];
+
+  // Fake leaderboard data (replace with Google Sheets integration later)
+  const LEADERBOARD = [
+    { house: "Nexus",  glyph: "", completed: 0 },
+    { house: "Cipher", glyph: "", completed: 0 },
+    { house: "Lumina", glyph: "", completed: 0 },
+    { house: "Arcane", glyph: "", completed: 0 },
+    { house: "Forge",  glyph: "", completed: 0 },
+  ];
+
+  const PASSCODE = "LUMOS";
+  const LETTERS = ["L", "U", "M", "O", "S"];
+
+  // ─────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────
+  let selectedHouse = null;
+  let completedChallenges = [];  // e.g. [1, 2] means challenges 1 & 2 done
+
+  // ─────────────────────────────────────────────
+  // LETTER REVEAL
+  // ─────────────────────────────────────────────
+  function updateLetterSlots() {
+    LETTERS.forEach((letter, i) => {
+      const slot = document.getElementById(`slot-${i}`);
+      const challengeId = i + 1;
+      if (completedChallenges.includes(challengeId)) {
+        slot.classList.remove('locked');
+        slot.classList.add('revealed');
+        slot.querySelector('.glyph').textContent = letter;
+      } else {
+        slot.classList.add('locked');
+        slot.classList.remove('revealed');
+        slot.querySelector('.glyph').textContent = '✦';
+      }
+    });
+  }
+
+  // Call on page load to reflect any saved state
+  updateLetterSlots();
+
+  // ─────────────────────────────────────────────
+  // HOUSE SELECTION
+  // ─────────────────────────────────────────────
+  function selectHouse(el, name) {
+    document.querySelectorAll('.house-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedHouse = name;
+    document.getElementById('enter-btn').disabled = false;
+  }
+
+  function enterArchives() {
+    if (!selectedHouse) return;
+
+    // Hide login, show dashboard
+    document.getElementById('login-panel').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('house-display').textContent = `House ${selectedHouse}`;
+
+    buildChallenges();
+    buildLeaderboard();
+    updateLetterSlots();
+  }
+
+  // ─────────────────────────────────────────────
+  // MARK CHALLENGE COMPLETE (call this manually
+  // or hook to your Google Form webhook later)
+  // e.g. markComplete(1) after Challenge 1 done
+  // ─────────────────────────────────────────────
+  function markComplete(challengeId) {
+    if (!completedChallenges.includes(challengeId)) {
+      completedChallenges.push(challengeId);
+      updateLetterSlots();
+      buildChallenges();
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // BUILD CHALLENGES
+  // ─────────────────────────────────────────────
+  function buildChallenges() {
+    const list = document.getElementById('challenge-list');
+    list.innerHTML = '';
+
+    CHALLENGES.forEach(ch => {
+      const done = completedChallenges.includes(ch.id);
+      const statusText = done ? 'RECOVERED' : ch.unlocked ? 'UNSEALED' : 'SEALED';
+      const statusClass = done ? 'status-done' : ch.unlocked ? 'status-open' : 'status-locked';
+      const rowClass = done ? 'completed' : ch.unlocked ? 'unlocked' : 'locked';
+
+      const row = document.createElement('div');
+      row.className = `challenge-row ${rowClass}`;
+      if (ch.unlocked && !done) {
+        row.onclick = () => openChallenge(ch);
+      }
+
+      row.innerHTML = `
+        <div class="ch-num">${ch.id}</div>
+        <div class="ch-info">
+          <div class="ch-name">${ch.name}</div>
+          <div class="ch-desc">${done ? `Letter recovered: <strong style="color:var(--gold)">${ch.letter}</strong>` : ch.desc}</div>
+        </div>
+        <div class="ch-status ${statusClass}">${statusText}</div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function openChallenge(ch) {
+    if (ch.link && !ch.link.startsWith('#')) {
+      window.open(ch.link, '_blank');
+    } else {
+      alert(`Challenge ${ch.id}: "${ch.name}" link not yet configured.\nReplace the link in the CHALLENGES config.`);
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // BUILD LEADERBOARD
+  // ─────────────────────────────────────────────
+  function buildLeaderboard() {
+    const tbody = document.getElementById('leaderboard-body');
+    tbody.innerHTML = '';
+
+    const sorted = [...LEADERBOARD].sort((a,b) => b.completed - a.completed);
+
+    sorted.forEach(h => {
+      const dots = Array(5).fill(0).map((_, i) => `
+        <div class="dot ${i < h.completed ? 'filled' : ''}"></div>
+      `).join('');
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <span class="house-badge">${h.glyph} House ${h.house}</span>
+        </td>
+        <td><div class="progress-dots">${dots}</div></td>
+        <td style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px">
+          ${h.completed === 5 ? '<span style="color:var(--gold)">✦ COMPLETE</span>' : `${h.completed} / 5`}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // PASSCODE
+  // ─────────────────────────────────────────────
+  function castSpell() {
+    const input = document.getElementById('passcode-input').value.trim().toUpperCase();
+    const error = document.getElementById('passcode-error');
+
+    if (input === PASSCODE) {
+      triggerWin();
+    } else {
+      error.classList.add('show');
+      document.getElementById('passcode-input').style.borderColor = 'var(--ember)';
+      setTimeout(() => {
+        error.classList.remove('show');
+        document.getElementById('passcode-input').style.borderColor = '';
+      }, 3000);
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.activeElement === document.getElementById('passcode-input')) {
+      castSpell();
+    }
+  });
+
+  // ─────────────────────────────────────────────
+  // WIN
+  // ─────────────────────────────────────────────
+  function triggerWin() {
+    const screen = document.getElementById('win-screen');
+    screen.classList.add('show');
+    document.getElementById('win-house-name').textContent = `House ${selectedHouse} has done it!`;
+    startFireworks();
+  }
+
+  function startFireworks() {
+    const canvas = document.getElementById('win-sparks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const colors = ['#c9a84c', '#e8c96d', '#faf8f4', '#7a6230', '#fff'];
+
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 6,
+        vy: (Math.random() - 0.5) * 6 - 2,
+        life: 1,
+        decay: Math.random() * 0.015 + 0.008,
+        size: Math.random() * 4 + 1,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.08;
+        p.life -= p.decay;
+
+        if (p.life > 0) {
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      ctx.globalAlpha = 1;
+      if (particles.some(p => p.life > 0)) requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  // ─────────────────────────────────────────────
+  // FLOATING PARTICLES BACKGROUND
+  // ─────────────────────────────────────────────
+  (function initParticles() {
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const sparks = Array(40).fill(0).map(() => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 1.5 + 0.3,
+      speed: Math.random() * 0.4 + 0.1,
+      opacity: Math.random() * 0.4 + 0.1,
+      drift: (Math.random() - 0.5) * 0.3
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      sparks.forEach(s => {
+        s.y -= s.speed;
+        s.x += s.drift;
+        s.opacity += (Math.random() - 0.5) * 0.02;
+        s.opacity = Math.max(0.05, Math.min(0.5, s.opacity));
+
+        if (s.y < -10) {
+          s.y = canvas.height + 10;
+          s.x = Math.random() * canvas.width;
+        }
+
+        ctx.globalAlpha = s.opacity;
+        ctx.fillStyle = '#c9a84c';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // ─────────────────────────────────────────────
+  // GOOGLE SHEETS LIVE SYNC
+  // ─────────────────────────────────────────────
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbze5HhXadEP-HXkMSarCAxgLTlSDLeQuvhidpwYRO5shYUBqXggIG6KvZodT4VrFhSC/exec";
+
+  async function fetchLeaderboard() {
+    if (!APPS_SCRIPT_URL) return; 
+    
+    try {
+      const response = await fetch(APPS_SCRIPT_URL);
+      const data = await response.json();
+      
+      if (data.leaderboard) {
+        // Update global LEADERBOARD with fresh data
+        data.leaderboard.forEach(item => {
+          const existing = LEADERBOARD.find(h => h.house === item.house);
+          if (existing) {
+            existing.completed = item.completed;
+          }
+        });
+        
+        // Rebuild the leaderboard display
+        buildLeaderboard();
+      }
+    } catch (err) {
+      console.warn('Could not fetch leaderboard:', err);
+    }
+  }
+
+  // Auto-refresh every 10 seconds
+  setInterval(fetchLeaderboard, 10000);
+  // Fetch once on load
+  fetchLeaderboard();
+
+  // ─────────────────────────────────────────────
+  // ADMIN PANEL
+  // ─────────────────────────────────────────────
+  const ADMIN_PASSWORD = "mimi5813";
+  let adminMode = false;
+
+  // Keyboard shortcut: Ctrl+Shift+A (or Cmd+Shift+A)
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      showAdminLogin();
+    }
+  });
+
+  function showAdminLogin() {
+    const password = prompt('🔐 Admin Access\nEnter password:');
+    if (password === ADMIN_PASSWORD) {
+      adminMode = true;
+      showAdminPanel();
+    } else if (password !== null) {
+      alert('❌ Incorrect password');
+    }
+  }
+
+  function showAdminPanel() {
+    // Check if panel already exists
+    if (document.getElementById('admin-panel')) {
+      document.getElementById('admin-panel').style.display = 'block';
+      return;
+    }
+
+    const panel = document.createElement('div');
+    panel.id = 'admin-panel';
+    panel.style.cssText = `
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,10,10,0.98);
+      border-top: 2px solid var(--gold);
+      padding: 20px;
+      z-index: 9999;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: var(--parchment);
+    `;
+
+    let html = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="color:var(--gold);letter-spacing:3px;">⚙️ ADMIN PANEL</span>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:var(--ember);border:none;color:white;padding:4px 12px;cursor:pointer;">CLOSE</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+    `;
+
+    // Challenge unlock controls
+    CHALLENGES.forEach(ch => {
+      const status = ch.unlocked ? 'UNLOCKED' : 'LOCKED';
+      const color = ch.unlocked ? '#4aad4a' : '#ad4a4a';
+      html += `
+        <div style="border:1px solid rgba(201,168,76,0.2);padding:12px;">
+          <div style="margin-bottom:8px;">Challenge ${ch.id}: ${ch.name}</div>
+          <div style="color:${color};margin-bottom:8px;">${status}</div>
+          <button onclick="toggleChallenge(${ch.id})" style="width:100%;padding:6px;background:rgba(201,168,76,0.1);border:1px solid var(--gold-dim);color:var(--gold);cursor:pointer;">
+            ${ch.unlocked ? 'LOCK' : 'UNLOCK'}
+          </button>
+        </div>
+      `;
+    });
+
+    html += `
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px;">
+        <button onclick="fetchLeaderboard()" style="padding:8px 16px;background:rgba(0,212,255,0.1);border:1px solid #007a99;color:#00d4ff;cursor:pointer;">
+          🔄 REFRESH LEADERBOARD
+        </button>
+        <button onclick="resetAdmin()" style="padding:8px 16px;background:rgba(139,58,58,0.1);border:1px solid var(--ember);color:var(--ember);cursor:pointer;">
+          ⚠️ RESET ALL
+        </button>
+      </div>
+    `;
+
+    panel.innerHTML = html;
+    document.body.appendChild(panel);
+  }
+
+  function toggleChallenge(id) {
+    const challenge = CHALLENGES.find(c => c.id === id);
+    if (challenge) {
+      challenge.unlocked = !challenge.unlocked;
+      buildChallenges();
+      showAdminPanel(); // Refresh panel display
+    }
+  }
+
+  function resetAdmin() {
+    if (confirm('⚠️ This will reset all challenge unlocks and completed challenges. Continue?')) {
+      CHALLENGES.forEach(ch => {
+        if (ch.id !== 1) ch.unlocked = false; // Keep challenge 1 unlocked
+      });
+      completedChallenges = [];
+      updateLetterSlots();
+      buildChallenges();
+      showAdminPanel();
+      alert('✓ Reset complete');
+    }
+  }
+</script>
+</body>
+</html>

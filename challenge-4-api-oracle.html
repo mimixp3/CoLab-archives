@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The API Oracle — CoLab Archives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --parchment: #f5f0e8;
+      --gold: #c9a84c;
+      --gold-dim: #7a6230;
+      --ash: #888880;
+      --cyan: #00d4ff;
+      --cyan-dim: #007a99;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--parchment);
+      font-family: 'EB Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,212,255,0.01) 2px, rgba(0,212,255,0.01) 4px
+      );
+      pointer-events: none; z-index: 100;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.92) 100%);
+      pointer-events: none; z-index: 1;
+    }
+
+    .wrapper {
+      position: relative; z-index: 2;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px 80px;
+      max-width: 780px; margin: 0 auto;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 48px; animation: fadeIn 0.8s ease both;
+    }
+
+    .back-link {
+      font-family: 'Cinzel', serif;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--gold-dim); text-decoration: none;
+      text-transform: uppercase; transition: color 0.3s;
+    }
+    .back-link:hover { color: var(--gold); }
+
+    .challenge-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--cyan); letter-spacing: 2px;
+    }
+
+    .header {
+      text-align: center; margin-bottom: 48px;
+      animation: fadeDown 1s ease both;
+    }
+
+    .challenge-number {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 5px;
+      color: var(--cyan-dim); margin-bottom: 12px; display: block;
+    }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(24px, 5vw, 48px);
+      font-weight: 700; color: var(--parchment);
+      letter-spacing: 4px;
+      text-shadow: 0 0 30px rgba(0,212,255,0.15);
+      position: relative; display: inline-block;
+    }
+
+    .title::before {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      color: var(--cyan); opacity: 0.06;
+      animation: glitch1 5s infinite;
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    }
+
+    @keyframes glitch1 {
+      0%, 92%, 100% { transform: translateX(0); }
+      94% { transform: translateX(-3px); }
+      96% { transform: translateX(3px); }
+    }
+
+    .divider {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; margin: 0 0 40px;
+    }
+
+    .divider-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    }
+
+    .divider-glyph {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--cyan); font-size: 12px;
+    }
+
+    .parchment-card {
+      width: 100%;
+      border: 1px solid rgba(201,168,76,0.2);
+      background: rgba(15,12,8,0.9);
+      padding: 32px 36px;
+      position: relative; margin-bottom: 32px;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .parchment-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .card-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 10px; letter-spacing: 4px;
+      color: var(--gold-dim); text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .card-eyebrow::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(201,168,76,0.15);
+    }
+
+    .card-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 17px; line-height: 1.95; color: var(--ash);
+    }
+
+    .card-text strong { color: var(--parchment); font-weight: 500; }
+    .card-text em { color: var(--gold); font-style: italic; }
+
+    /* ── RIDDLE ── */
+    .riddle-scroll {
+      width: 100%;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: rgba(12,10,5,0.97);
+      padding: 40px 36px;
+      position: relative; margin-bottom: 32px;
+      text-align: center;
+      animation: fadeUp 1.3s ease both;
+    }
+
+    .riddle-scroll::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .riddle-scroll::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    }
+
+    .riddle-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 10px; letter-spacing: 5px;
+      color: var(--gold-dim); text-transform: uppercase;
+      margin-bottom: 28px; display: block;
+    }
+
+    .riddle-text {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(18px, 3vw, 23px);
+      line-height: 2;
+      color: var(--parchment);
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+
+    .riddle-text em {
+      color: var(--gold);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .riddle-instruction {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 3px;
+      color: var(--cyan-dim);
+    }
+
+    /* ── API TERMINAL ── */
+    .api-terminal {
+      width: 100%;
+      background: rgba(0, 8, 12, 0.95);
+      border: 1px solid rgba(0,212,255,0.15);
+      position: relative; margin-bottom: 32px;
+      animation: fadeUp 1.5s ease both;
+    }
+
+    .api-terminal::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+    }
+
+    .api-terminal-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(0,212,255,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .api-terminal-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--cyan); letter-spacing: 2px;
+    }
+
+    .api-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 2px;
+      padding: 2px 8px;
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--cyan);
+    }
+
+    .api-body { padding: 24px; }
+
+    .url-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--cyan-dim); margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .url-bar {
+      display: flex; align-items: stretch;
+      border: 1px solid rgba(0,212,255,0.2);
+      background: rgba(0,0,0,0.5);
+      overflow: hidden; margin-bottom: 24px;
+    }
+
+    .url-method {
+      padding: 10px 14px;
+      background: rgba(0,212,255,0.08);
+      border-right: 1px solid rgba(0,212,255,0.15);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      display: flex; align-items: center;
+    }
+
+    .url-input {
+      flex: 1; padding: 10px 14px;
+      background: transparent;
+      border: none; outline: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; color: var(--parchment);
+    }
+
+    .url-input::placeholder { color: rgba(0,212,255,0.2); }
+
+    .send-btn {
+      padding: 10px 20px;
+      background: rgba(0,212,255,0.1);
+      border: none;
+      border-left: 1px solid rgba(0,212,255,0.15);
+      color: var(--cyan);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .send-btn:hover { background: rgba(0,212,255,0.2); }
+
+    .response-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--cyan-dim); margin-bottom: 8px;
+      text-transform: uppercase;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .response-status { padding: 2px 8px; font-size: 10px; font-family: 'Share Tech Mono', monospace; }
+    .status-200 { color: #4aad4a; border: 1px solid #2a6a2a; }
+    .status-403 { color: #ad4a4a; border: 1px solid #6a2a2a; }
+    .status-waiting { color: var(--cyan-dim); border: 1px solid rgba(0,212,255,0.1); }
+
+    .response-body {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(0,212,255,0.1);
+      padding: 20px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; line-height: 1.8;
+      min-height: 140px; color: var(--parchment);
+      white-space: pre-wrap; transition: all 0.3s;
+    }
+
+    .json-key { color: var(--cyan); }
+    .json-err { color: #d04040; }
+    .json-gold { color: var(--gold); }
+    .json-warm { color: #d4842a; }
+    .blink { animation: blink 1.1s step-end infinite; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .footer {
+      margin-top: 20px; text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: #222; letter-spacing: 2px;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="top-bar">
+    <a href="#" class="back-link">← The Archives</a>
+    <span class="challenge-badge">SCROLL_04 // UNSEALED</span>
+  </div>
+
+  <div class="header">
+    <span class="challenge-number">// CHALLENGE_04 //</span>
+    <h1 class="title" data-text="THE API ORACLE">THE API ORACLE</h1>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-glyph">[API]</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="parchment-card">
+    <div class="card-eyebrow">📜 &nbsp; The Archivist's Note</div>
+    <p class="card-text">
+      The fourth scroll is guarded by the <strong>Oracle</strong> — a system that
+      responds only to those who provide the correct key.
+      It will not yield to brute force.
+      <em>Solve the riddle. Speak the answer. Claim the scroll.</em>
+    </p>
+  </div>
+
+  <!-- RIDDLE -->
+  <div class="riddle-scroll">
+    <span class="riddle-eyebrow">✦ &nbsp; The Oracle's Riddle &nbsp; ✦</span>
+    <p class="riddle-text">
+      Remove my head and I still point somewhere.<br/>
+      Remove my tail and I still point somewhere.<br/>
+      Remove <em>both</em> and I am nothing at all.<br/><br/>
+      I chain others together<br/>
+      but am never chained myself.<br/><br/>
+      <em>What am I?</em>
+    </p>
+    <span class="riddle-instruction">// The answer is your key — use it in the terminal below</span>
+  </div>
+
+  <!-- API TERMINAL -->
+  <div class="api-terminal">
+    <div class="api-terminal-header">
+      <span class="api-terminal-title">ORACLE_API v1.0 // COLAB ARCHIVE ENDPOINT</span>
+      <span class="api-status">ONLINE</span>
+    </div>
+    <div class="api-body">
+      <div class="url-label">// Request URL</div>
+      <div class="url-bar">
+        <span class="url-method">GET</span>
+        <input class="url-input" id="url-input" type="text" placeholder="colab-archives/oracle/scroll?key=???"/>
+        <button class="send-btn" onclick="sendRequest()">SEND ▶</button>
+      </div>
+      <div class="response-label">
+        <span>// Response</span>
+        <span class="response-status status-waiting" id="status-badge">AWAITING REQUEST</span>
+      </div>
+      <div class="response-body" id="response-body"><span class="json-key">// Send a request to begin...</span><span class="blink">_</span></div>
+    </div>
+  </div>
+
+  <div class="footer">// COLAB_ARCHIVES — SCROLL_04 // THE ORACLE AWAITS //</div>
+
+</div>
+
+<script>
+  const responses = {
+    "": `<span class="json-err">{
+  "status": 403,
+  "error": "FORBIDDEN",
+  "message": "No key provided. The Oracle does not speak to the unprepared.",
+  "hint": "Append ?key=YOUR_ANSWER to the URL."
+}</span>`,
+
+    "stack": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "A stack pushes and pops. It does not point.",
+  "hint": "Think about what references memory addresses directly."
+}</span>`,
+
+    "node": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "A node holds data. It is pointed at — it does not point.",
+  "hint": "What connects nodes together in a linked list?"
+}</span>`,
+
+    "array": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "An array is indexed, not directed. It does not point — it stores.",
+  "hint": "Think lower level. Think memory addresses."
+}</span>`,
+
+    "compiler": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "The compiler translates. It does not point or chain.",
+  "hint": "Think about a fundamental C data type."
+}</span>`,
+
+    "binary": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "Binary is a language. It cannot point.",
+  "hint": "What C construct stores the address of another variable?"
+}</span>`,
+
+    "null": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "NULL is what I become when emptied. But what am I before that?",
+  "hint": "Read the riddle again."
+}</span>`,
+
+    "reference": `<span class="json-warm">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "Very close. A reference and this thing are nearly synonymous in C.",
+  "hint": "In C, it is declared with *. One word."
+}</span>`,
+
+    "linked": `<span class="json-warm">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "You understand the structure. But what connects the links?",
+  "hint": "What does each node use to reference the next one?"
+}</span>`,
+
+    "pointer": `<span class="json-gold">{
+  "status": 200,
+  "message": "ACCESS GRANTED — SCROLL FRAGMENT IV RECOVERED",
+  "fragment": {
+    "letter": "O",
+    "position": 4,
+    "content": "The fourth letter of the forgotten spell is: O"
+  },
+  "archivist_note": "You understand memory. The archives reward those who think at the lowest level.",
+  "submission_url": "https://forms.gle/G7v7hWBV19vwjKnHA",
+  "instruction": "Submit the letter O at the link above."
+}</span>`,
+
+    "_default": `<span class="json-err">{
+  "status": 403,
+  "error": "INVALID_KEY",
+  "message": "The Oracle does not recognize this key.",
+  "hint": "Read the riddle carefully. The answer is a fundamental CS concept."
+}</span>`
+  };
+
+  function sendRequest() {
+    const input = document.getElementById('url-input').value.trim();
+    const responseBody = document.getElementById('response-body');
+    const statusBadge = document.getElementById('status-badge');
+
+    let key = "";
+    if (input.includes('?key=')) {
+      key = input.split('?key=')[1].toLowerCase().trim();
+    }
+
+    responseBody.innerHTML = '<span class="json-key">// Sending request...</span><span class="blink">_</span>';
+    statusBadge.className = 'response-status status-waiting';
+    statusBadge.textContent = 'LOADING...';
+
+    setTimeout(() => {
+      const resp = responses[key] ?? responses["_default"];
+      const is200 = key === "pointer";
+      responseBody.innerHTML = resp;
+      statusBadge.className = `response-status ${is200 ? 'status-200' : 'status-403'}`;
+      statusBadge.textContent = is200 ? '200 OK' : '403 FORBIDDEN';
+    }, 600);
+  }
+
+  document.getElementById('url-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendRequest();
+  });
+</script>
+
+</body>
+</html>
