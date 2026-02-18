@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Enchanted Image — CoLab Archives</title>
+  <title>The Enchanted Image - CoLab Archives</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -231,7 +231,7 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: 13px;
       line-height: 2;
-      /* WHITE TEXT ON WHITE-ISH BACKGROUND - only visible when selected */
+      /*white on white on purpose btw*/
       color: rgba(240, 235, 220, 1);
       text-shadow: none;
       text-align: center;
@@ -250,7 +250,8 @@
       text-align: center;
     }
 
-    /* ── HINT STEPS ── */
+
+    
     .steps {
       width: 100%;
       display: flex; flex-direction: column; gap: 12px;
@@ -327,13 +328,13 @@
 
 <div class="wrapper">
 
-  <!-- TOP BAR -->
+  <!--TOP BAR-->
   <div class="top-bar">
     <a href="#" class="back-link">← The Archives</a>
     <span class="challenge-badge">SCROLL_02 // UNSEALED</span>
   </div>
 
-  <!-- HEADER -->
+  <!--HEADER-->
   <div class="header">
     <span class="challenge-number">// CHALLENGE_02 //</span>
     <h1 class="title" data-text="THE ENCHANTED IMAGE">THE ENCHANTED IMAGE</h1>
@@ -349,25 +350,25 @@
   <div class="parchment-card">
     <div class="card-eyebrow">📜 &nbsp; The Archivist's Note</div>
     <p class="card-text">
-      The second scroll was hidden in plain sight — concealed within an image that appears
+      The second scroll was hidden in plain sight and concealed as if
       ordinary to the untrained eye.
       <br/><br/>
       <em style="display:block;text-align:center;">Not all data is rendered. Not all information is visible.</em>
     </p>
   </div>
 
-  <!-- THE ENCHANTED IMAGE -->
+  <!--IMAGE-->
   <div class="image-container">
     <div class="image-header">
       <span class="image-header-title">ARCHIVE_ARTIFACT_002.SVG // SCROLL FRAGMENT DETECTED</span>
     </div>
 
-    <!-- SVG image that looks decorative but hides the clue -->
+    <!--SVG image itself-->
     <svg class="enchanted-canvas" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg">
       <!-- Dark background -->
       <rect width="760" height="400" fill="#080510"/>
 
-      <!-- Grid pattern -->
+      <!--grid pattern stuff-->
       <defs>
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(157,111,255,0.06)" stroke-width="1"/>
@@ -384,7 +385,7 @@
       <rect width="760" height="400" fill="url(#smallgrid)"/>
       <rect width="760" height="400" fill="url(#grid)"/>
 
-      <!-- Decorative circuit-like lines -->
+      <!--circuit line stuff-->
       <g stroke="rgba(157,111,255,0.15)" stroke-width="1" fill="none">
         <path d="M 0 200 L 100 200 L 120 180 L 200 180"/>
         <path d="M 760 200 L 660 200 L 640 220 L 560 220"/>
@@ -396,7 +397,7 @@
         <circle cx="400" cy="240" r="4" fill="rgba(157,111,255,0.3)"/>
       </g>
 
-      <!-- Gold decorative corners -->
+      <!--gold corners-->
       <g stroke="rgba(201,168,76,0.3)" stroke-width="1" fill="none">
         <path d="M 20 20 L 60 20 L 60 24 M 20 20 L 20 60 L 24 60"/>
         <path d="M 740 20 L 700 20 L 700 24 M 740 20 L 740 60 L 736 60"/>
@@ -404,7 +405,7 @@
         <path d="M 740 380 L 700 380 L 700 376 M 740 380 L 740 340 L 736 340"/>
       </g>
 
-      <!-- Central mystical symbol -->
+      <!--symbol-->
       <g filter="url(#glow)">
         <circle cx="380" cy="200" r="80" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
         <circle cx="380" cy="200" r="60" fill="none" stroke="rgba(157,111,255,0.15)" stroke-width="1"/>
@@ -416,7 +417,7 @@
         <line x1="437" y1="143" x2="323" y2="257" stroke="rgba(157,111,255,0.08)" stroke-width="1"/>
       </g>
 
-      <!-- Floating binary decorations (visible, decorative) -->
+      <!--floating binary-->
       <g font-family="monospace" font-size="9" fill="rgba(157,111,255,0.12)" letter-spacing="2">
         <text x="30" y="100">01000011 01001111 01001100</text>
         <text x="30" y="115">01000001 01000010 00100000</text>
@@ -426,17 +427,16 @@
         <text x="30" y="335">10100101 01011010</text>
       </g>
 
-      <!-- Subtle parchment text watermark (very faint, visible) -->
+      <!--parchment text watermark-->
       <g font-family="serif" font-size="11" fill="rgba(201,168,76,0.08)" text-anchor="middle">
         <text x="380" y="370">ARCHIVE ARTIFACT — HANDLE WITH CARE — COLAB ARCHIVES SEASON I</text>
       </g>
 
-      <!-- THE HIDDEN MESSAGE — white text on near-white background box -->
-      <!-- This is the steganography element: hidden in plain sight -->
+      <!--white text on near-white background box -->
       <rect x="140" y="155" width="480" height="90" fill="rgba(240,235,220,0.97)" rx="2"/>
       <text x="380" y="183" font-family="monospace" font-size="11"
             fill="rgba(240,235,220,1)" text-anchor="middle" letter-spacing="1">
-        COLAB ARCHIVES — SCROLL FRAGMENT II
+        COLAB ARCHIVES: SCROLL FRAGMENT II
       </text>
       <text x="380" y="200" font-family="monospace" font-size="11"
             fill="rgba(240,235,220,1)" text-anchor="middle" letter-spacing="1">
@@ -451,7 +451,7 @@
         Submit here: https://forms.gle/HR5t5aHjsEZTf4E78
       </text>
 
-      <!-- Top label -->
+      <!--top label-->
       <text x="380" y="50" font-family="monospace" font-size="12"
             fill="rgba(201,168,76,0.4)" text-anchor="middle" letter-spacing="3">
         ARCHIVE_ARTIFACT_002
@@ -467,10 +467,7 @@
     </div>
   </div>
 
-  <!-- HINT STEPS -->
-
-
-  <div class="footer">// COLAB_ARCHIVES — SCROLL_02 // MAY YOUR EYES SEE WHAT OTHERS CANNOT //</div>
+  <div class="footer">// COLAB_ARCHIVES - SCROLL_02 // LOOK BEYOND THE LAYERS //</div>
 
 </div>
 
