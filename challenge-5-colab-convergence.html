@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Colab Convergence — CoLab Archives</title>
+  <title>The Colab Convergence - CoLab Archives</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -112,7 +112,7 @@
       color: var(--terminal); font-size: 12px;
     }
 
-    /* ── PARCHMENT CARD ── */
+    /* ──parchment── */
     .parchment-card {
       width: 100%;
       border: 1px solid rgba(201,168,76,0.2);
@@ -149,7 +149,7 @@
     .card-text strong { color: var(--parchment); font-weight: 500; }
     .card-text em { color: var(--gold); font-style: italic; }
 
-    /* ── EMULATOR INSTRUCTION CARD ── */
+    /* ──emulator-card── */
     .emulator-card {
       width: 100%;
       border: 1px solid rgba(0,255,100,0.15);
@@ -204,7 +204,7 @@
       text-decoration: underline;
     }
 
-    /* ── ASSEMBLY CODE BLOCK ── */
+    /* ──asb code── */
     .code-block {
       width: 100%;
       background: rgba(0,5,2,0.98);
@@ -265,7 +265,7 @@
     .asm-comment { color: rgba(0,255,100,0.25); font-size: 12px; }
     .asm-blank { display: block; height: 8px; }
 
-    /* ── REGISTER TABLE ── */
+    /* ──register table── */
     .register-table {
       width: 100%;
       border: 1px solid rgba(0,255,100,0.1);
@@ -319,7 +319,7 @@
       text-shadow: 0 0 15px rgba(201,168,76,0.5);
     }
 
-    /* ── QUESTION CARD ── */
+    /* ──question── */
     .question-card {
       width: 100%;
       border: 1px solid rgba(201,168,76,0.25);
@@ -393,7 +393,7 @@
     .answer-feedback.error { color: #ad4a4a; }
     .answer-feedback.success { color: #4aad4a; }
 
-    /* ── WIN CARD ── */
+    /* ──win── */
     .win-card {
       display: none;
       width: 100%;
@@ -481,13 +481,13 @@
 
 <div class="wrapper">
 
-  <!-- TOP BAR -->
+  <!--topbar-->
   <div class="top-bar">
     <a href="#" class="back-link">← The Archives</a>
     <span class="challenge-badge">SCROLL_05 // FINAL SCROLL</span>
   </div>
 
-  <!-- HEADER -->
+  <!--header-->
   <div class="header">
     <span class="challenge-number">// CHALLENGE_05 — THE FINAL SCROLL //</span>
     <h1 class="title">THE COLAB<br/>CONVERGENCE</h1>
@@ -511,7 +511,7 @@
     </p>
   </div>
 
-  <!-- EMULATOR INSTRUCTION -->
+  <!--emu8086 instruction-->
   <div class="emulator-card">
     <div class="emulator-header">
       <span class="emulator-title">// STEP 01 — OPEN THE EMULATOR</span>
@@ -531,7 +531,7 @@
     </div>
   </div>
 
-  <!-- ASSEMBLY CODE -->
+  <!--code asb-->
   <div class="code-block">
     <div class="code-header">
       <span class="code-header-title">// SCROLL_FRAGMENT_V.asm — COPY THIS EXACTLY</span>
@@ -627,7 +627,7 @@
     </div>
   </div>
 
-  <!-- REGISTER DISPLAY -->
+  <!--reg display-->
   <div class="register-table">
     <div class="reg-header">
       <span class="reg-header-title">// REGISTER STATE AFTER EXECUTION — FIND YOUR ANSWER HERE</span>
@@ -668,7 +668,7 @@
     <div class="answer-feedback" id="answer-feedback"></div>
   </div>
 
-  <!-- WIN CARD (hidden until correct) -->
+  <!--win card hidden until achieved-->
   <div class="win-card" id="win-card">
     <span class="win-letter">S</span>
     <div class="win-title">✦ &nbsp; Scroll Fragment V — Recovered &nbsp; ✦</div>
