@@ -364,9 +364,10 @@
     </div>
 
     <svg class="enchanted-canvas" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg">
+      <!--background -->
       <rect width="760" height="400" fill="#080510"/>
 
-      <!-- Grid pattern -->
+      <!--ggrid pattern -->
       <defs>
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(157,111,255,0.06)" stroke-width="1"/>
@@ -383,20 +384,27 @@
       <rect width="760" height="400" fill="url(#smallgrid)"/>
       <rect width="760" height="400" fill="url(#grid)"/>
 
+      <!-- MORSE CODE CIRCUIT LINES -->
+      <!-- Top line: · · — (U in morse) -->
       <g stroke="rgba(201,168,76,0.4)" stroke-width="2.5" fill="none">
+        <!-- DOT (short line) -->
         <line x1="100" y1="100" x2="140" y2="100" stroke-linecap="round"/>
         <circle cx="140" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
         
+        <!-- GAP -->
         
         <!-- DOT (short line) -->
         <line x1="180" y1="100" x2="220" y2="100" stroke-linecap="round"/>
         <circle cx="220" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
         
+        <!-- GAP -->
         
+        <!-- DASH (long line) -->
         <line x1="260" y1="100" x2="360" y2="100" stroke-linecap="round" stroke-width="3"/>
         <circle cx="360" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
       </g>
 
+      <!-- Bottom line: REPEAT pattern for clarity -->
       <g stroke="rgba(201,168,76,0.4)" stroke-width="2.5" fill="none">
         <!-- DOT -->
         <line x1="400" y1="300" x2="440" y2="300" stroke-linecap="round"/>
@@ -425,6 +433,7 @@
         <path d="M 740 380 L 700 380 L 700 376 M 740 380 L 740 340 L 736 340"/>
       </g>
 
+      <!--symbol-->
       <g filter="url(#glow)">
         <circle cx="380" cy="200" r="80" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
         <circle cx="380" cy="200" r="60" fill="none" stroke="rgba(157,111,255,0.15)" stroke-width="1"/>
@@ -439,7 +448,24 @@
             fill="rgba(157,111,255,0.3)" text-anchor="middle" letter-spacing="2">
         SIGNAL PATTERN DETECTED // DECODE TO PROCEED
       </text>
+
+      <text x="380" y="380" font-family="Share Tech Mono, monospace" font-size="13" 
+            fill="rgba(201,168,76,0.5)" text-anchor="middle" letter-spacing="4"
+            style="user-select: text; cursor: text;">
+        · · —
+      </text>
     </svg>
+
+    <div class="image-caption">
+      ARTIFACT_002 // TRANSMISSION INTERCEPTED // CLASSIFICATION: UNKNOWN
+    </div>
+  </div>
+
+  <!-- Submit link only -->
+  <div style="text-align:center;margin-bottom:32px;animation:fadeUp 1.6s ease both;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold-dim);">SUBMIT YOUR ANSWER TO THE ORACLE →&nbsp;</span>
+    <a href="https://forms.gle/go6LyfJixGiVxUoR8" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-decoration:underline;">forms.gle/go6LyfJixGiVxUoR8</a>
+  </div>
 
     <div class="image-caption">
       ARTIFACT_002 // TRANSMISSION INTERCEPTED // CLASSIFICATION: UNKNOWN
