@@ -364,7 +364,6 @@
     </div>
 
     <svg class="enchanted-canvas" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg">
-      <!-- Dark background -->
       <rect width="760" height="400" fill="#080510"/>
 
       <!-- Grid pattern -->
@@ -384,27 +383,20 @@
       <rect width="760" height="400" fill="url(#smallgrid)"/>
       <rect width="760" height="400" fill="url(#grid)"/>
 
-      <!-- MORSE CODE CIRCUIT LINES -->
-      <!-- Top line: · · — (U in morse) -->
       <g stroke="rgba(201,168,76,0.4)" stroke-width="2.5" fill="none">
-        <!-- DOT (short line) -->
         <line x1="100" y1="100" x2="140" y2="100" stroke-linecap="round"/>
         <circle cx="140" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
         
-        <!-- GAP -->
         
         <!-- DOT (short line) -->
         <line x1="180" y1="100" x2="220" y2="100" stroke-linecap="round"/>
         <circle cx="220" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
         
-        <!-- GAP -->
         
-        <!-- DASH (long line) -->
         <line x1="260" y1="100" x2="360" y2="100" stroke-linecap="round" stroke-width="3"/>
         <circle cx="360" cy="100" r="3" fill="rgba(201,168,76,0.5)"/>
       </g>
 
-      <!-- Bottom line: REPEAT pattern for clarity -->
       <g stroke="rgba(201,168,76,0.4)" stroke-width="2.5" fill="none">
         <!-- DOT -->
         <line x1="400" y1="300" x2="440" y2="300" stroke-linecap="round"/>
@@ -419,7 +411,6 @@
         <circle cx="660" cy="300" r="3" fill="rgba(201,168,76,0.5)"/>
       </g>
 
-      <!-- Decorative connecting lines (purple, not part of code) -->
       <g stroke="rgba(157,111,255,0.15)" stroke-width="1" fill="none">
         <path d="M 360 100 L 380 110 L 380 180"/>
         <path d="M 400 300 L 380 290 L 380 220"/>
@@ -427,7 +418,6 @@
         <path d="M 660 300 L 680 300 L 680 200 L 660 200"/>
       </g>
 
-      <!-- Gold decorative corners -->
       <g stroke="rgba(201,168,76,0.3)" stroke-width="1" fill="none">
         <path d="M 20 20 L 60 20 L 60 24 M 20 20 L 20 60 L 24 60"/>
         <path d="M 740 20 L 700 20 L 700 24 M 740 20 L 740 60 L 736 60"/>
@@ -435,21 +425,12 @@
         <path d="M 740 380 L 700 380 L 700 376 M 740 380 L 740 340 L 736 340"/>
       </g>
 
-      <!-- Central mystical symbol -->
       <g filter="url(#glow)">
         <circle cx="380" cy="200" r="80" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
         <circle cx="380" cy="200" r="60" fill="none" stroke="rgba(157,111,255,0.15)" stroke-width="1"/>
         <circle cx="380" cy="200" r="40" fill="none" stroke="rgba(201,168,76,0.1)" stroke-width="1"/>
       </g>
 
-      <!-- Copyable morse code text (selectable) -->
-      <text x="380" y="380" font-family="Share Tech Mono, monospace" font-size="14" 
-            fill="rgba(201,168,76,0.6)" text-anchor="middle" letter-spacing="4"
-            style="user-select: text; cursor: text;">
-        · · —
-      </text>
-
-      <!-- Hint text -->
       <text x="380" y="50" font-family="monospace" font-size="12"
             fill="rgba(201,168,76,0.4)" text-anchor="middle" letter-spacing="3">
         TRANSMISSION INTERCEPTED
@@ -458,13 +439,17 @@
             fill="rgba(157,111,255,0.3)" text-anchor="middle" letter-spacing="2">
         SIGNAL PATTERN DETECTED // DECODE TO PROCEED
       </text>
-
-      <!-- Bottom hint -->
-      <text x="380" y="395" font-family="monospace" font-size="9"
-            fill="rgba(157,111,255,0.25)" text-anchor="middle" letter-spacing="2">
-        USE INTERNATIONAL MORSE DECODER
-      </text>
     </svg>
+
+    <div class="image-caption">
+      ARTIFACT_002 // TRANSMISSION INTERCEPTED // CLASSIFICATION: UNKNOWN
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-bottom:32px;animation:fadeUp 1.6s ease both;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold-dim);">SUBMIT YOUR ANSWER TO THE ORACLE →&nbsp;</span>
+    <a href="https://forms.gle/go6LyfJixGiVxUoR8" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-decoration:underline;">forms.gle/go6LyfJixGiVxUoR8</a>
+  </div>
 
     <div class="image-caption">
       ARTIFACT_002 // MORSE TRANSMISSION // GOLD LINES ENCODE MESSAGE
