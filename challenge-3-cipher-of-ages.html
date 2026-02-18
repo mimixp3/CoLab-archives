@@ -122,7 +122,7 @@
       color: var(--amber); font-size: 12px;
     }
 
-    /* ── PARCHMENT CARD ── */
+    /* ──parchment── */
     .parchment-card {
       width: 100%;
       border: 1px solid rgba(201,168,76,0.2);
@@ -159,7 +159,7 @@
     .card-text strong { color: var(--parchment); font-weight: 500; }
     .card-text em { color: var(--gold); font-style: italic; }
 
-    /* ── CIPHER SCROLL ── */
+    /* ──cipher scroll── */
     .cipher-scroll {
       width: 100%;
       border: 1px solid rgba(212,132,42,0.25);
@@ -195,7 +195,7 @@
       padding: 36px;
     }
 
-    /* The actual cipher text */
+    /*text itself*/
     .cipher-text {
       font-family: 'Share Tech Mono', monospace;
       font-size: 15px;
@@ -229,7 +229,7 @@
       margin-top: 20px;
     }
 
-    /* ── INTERACTIVE DECODER ── */
+    /* ──decoder── */
     .decoder {
       width: 100%;
       border: 1px solid rgba(212,132,42,0.15);
@@ -318,7 +318,7 @@
       box-shadow: 0 0 20px rgba(201,168,76,0.1);
     }
 
-    /* ── HINT STEPS ── */
+    /* ──hints── */
     .steps {
       width: 100%;
       display: flex; flex-direction: column; gap: 12px;
@@ -389,13 +389,13 @@
 
 <div class="wrapper">
 
-  <!-- TOP BAR -->
+  <!--topbars-->
   <div class="top-bar">
     <a href="#" class="back-link">← The Archives</a>
     <span class="challenge-badge">SCROLL_03 // UNSEALED</span>
   </div>
 
-  <!-- HEADER -->
+  <!--headers-->
   <div class="header">
     <span class="challenge-number">// CHALLENGE_03 //</span>
     <h1 class="title" data-text="THE CIPHER OF AGES">THE CIPHER OF AGES</h1>
@@ -407,20 +407,20 @@
     <div class="divider-line"></div>
   </div>
 
-  <!-- ARCHIVIST NOTE -->
+  <!--notes-->
   <div class="parchment-card">
     <div class="card-eyebrow">📜 &nbsp; The Archivist's Note</div>
     <p class="card-text">
       The third scroll was encoded using one of the oldest known ciphers, a technique so ancient
-      it predates the digital age. A simple shift is all that stands between you and the third letter.
-      <em>Find the correct rotation. Decode the message.</em>
+      it predates the digital age.
+      <em>Find the correct rotation, and you will decode the message.</em>
     </p>
   </div>
 
-  <!-- CIPHER TEXT -->
+  <!--cipher-->
   <div class="cipher-scroll">
     <div class="cipher-header">
-      <span class="cipher-header-title">Scroll Fragment III — Intercepted Transmission</span>
+      <span class="cipher-header-title">Scroll Fragment III: Intercepted Transmission</span>
       <span class="cipher-header-meta">CIPHER: UNKNOWN // SHIFT: CLASSIFIED</span>
     </div>
     <div class="cipher-body">
@@ -430,7 +430,7 @@
     </div>
   </div>
 
-  <!-- VISIBLE SUBMIT LINK -->
+  <!--submission link-->
   <div style="text-align:center;margin-bottom:32px;animation:fadeUp 1.6s ease both;">
     <span style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--amber-dim);">SUBMIT YOUR ANSWER TO THE ORACLE →&nbsp;</span>
     <a href="https://forms.gle/ecuyBejopk1TH6uS6" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-decoration:underline;">forms.gle/ecuyBejopk1TH6uS6</a>
@@ -442,8 +442,8 @@
         <div class="step-title">Identify the Cipher</div>
         <div class="step-desc">
           The encrypted message above uses a classical substitution cipher. Each letter has been
-          shifted by a fixed number of positions in the alphabet. There are only 25 possible shifts.
-          Work it out. Pen and paper encouraged.
+          shifted by a fixed number of positions in the alphabet. 
+          Work it out with your pen and papers
         </div>
       </div>
     </div>
@@ -458,11 +458,8 @@
     </div>
   </div>
 
-  <div class="footer">// COLAB_ARCHIVES — SCROLL_03 // IN MATHEMATICS WE TRUST //</div>
+  <div class="footer">// COLAB_ARCHIVES - SCROLL_03 // THANK YOU DR. AHMED FOR LOWKEY INVENTING DISCRETE MATH //</div>
 
 </div>
-
-
-
 </body>
 </html>
