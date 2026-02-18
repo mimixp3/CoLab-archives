@@ -1263,7 +1263,7 @@
   }
 
   function resetAdmin() {
-    if (confirm('⚠️ This will reset all challenge unlocks and completed challenges. Continue?')) {
+    if (confirm('This will reset all challenge unlocks and completed challenges. Continue?')) {
       CHALLENGES.forEach(ch => {
         if (ch.id !== 1) ch.unlocked = false; 
       });
@@ -1274,6 +1274,7 @@
       alert('✓ Reset complete');
     }
   }
+  
 </script>
 </body>
 </html>
