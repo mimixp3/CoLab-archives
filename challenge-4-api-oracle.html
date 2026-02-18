@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The API Oracle — CoLab Archives</title>
+  <title>The API Oracle - CoLab Archives</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -155,7 +155,7 @@
     .card-text strong { color: var(--parchment); font-weight: 500; }
     .card-text em { color: var(--gold); font-style: italic; }
 
-    /* ── RIDDLE ── */
+    /* ──mama a riddle behind you── */
     .riddle-scroll {
       width: 100%;
       border: 1px solid rgba(201,168,76,0.25);
@@ -207,7 +207,7 @@
       color: var(--cyan-dim);
     }
 
-    /* ── API TERMINAL ── */
+    /* ──api terminal── */
     .api-terminal {
       width: 100%;
       background: rgba(0, 8, 12, 0.95);
@@ -373,21 +373,22 @@
     </p>
   </div>
 
-  <!-- RIDDLE -->
+  <!--riddle-->
   <div class="riddle-scroll">
     <span class="riddle-eyebrow">✦ &nbsp; The Oracle's Riddle &nbsp; ✦</span>
     <p class="riddle-text">
-      Remove my head and I still point somewhere.<br/>
-      Remove my tail and I still point somewhere.<br/>
+      I hold no value myself, but I know where values hide.<br/>
+      Remove my head or my tail and I'd guide you.<br/>
       Remove <em>both</em> and I am nothing at all.<br/><br/>
       I chain others together<br/>
-      but am never chained myself.<br/><br/>
+      but am never chained myself. 
+      Dereference me and I surrender what I guard.<br/><br/>
       <em>What am I?</em>
     </p>
-    <span class="riddle-instruction">// The answer is your key — use it in the terminal below</span>
+    <span class="riddle-instruction">// The answer is your key, use it in the terminal below</span>
   </div>
 
-  <!-- API TERMINAL -->
+  <!--api terminal-->
   <div class="api-terminal">
     <div class="api-terminal-header">
       <span class="api-terminal-title">ORACLE_API v1.0 // COLAB ARCHIVE ENDPOINT</span>
@@ -404,11 +405,11 @@
         <span>// Response</span>
         <span class="response-status status-waiting" id="status-badge">AWAITING REQUEST</span>
       </div>
-      <div class="response-body" id="response-body"><span class="json-key">// Send a request to begin...</span><span class="blink">_</span></div>
+      <div class="response-body" id="response-body"><span class="json-key">// Send a request to begin....</span><span class="blink">_</span></div>
     </div>
   </div>
 
-  <div class="footer">// COLAB_ARCHIVES — SCROLL_04 // THE ORACLE AWAITS //</div>
+  <div class="footer">// COLAB_ARCHIVES - SCROLL_04 // THE ORACLE AWAITS //</div>
 
 </div>
 
@@ -417,21 +418,21 @@
     "": `<span class="json-err">{
   "status": 403,
   "error": "FORBIDDEN",
-  "message": "No key provided. The Oracle does not speak to the unprepared.",
+  "message": "No key provided. The Oracle does not speak to the unprepared like you didn't even try did you?",
   "hint": "Append ?key=YOUR_ANSWER to the URL."
 }</span>`,
 
     "stack": `<span class="json-err">{
   "status": 403,
   "error": "INVALID_KEY",
-  "message": "A stack pushes and pops. It does not point.",
+  "message": "A stack pushes and pops. It does not point.. let's put our thinking caps on",
   "hint": "Think about what references memory addresses directly."
 }</span>`,
 
     "node": `<span class="json-err">{
   "status": 403,
   "error": "INVALID_KEY",
-  "message": "A node holds data. It is pointed at — it does not point.",
+  "message": "A node holds data. It is pointed at, it does not point.",
   "hint": "What connects nodes together in a linked list?"
 }</span>`,
 
@@ -460,14 +461,14 @@
   "status": 403,
   "error": "INVALID_KEY",
   "message": "NULL is what I become when emptied. But what am I before that?",
-  "hint": "Read the riddle again."
+  "hint": "Read the riddle again you dummy."
 }</span>`,
 
     "reference": `<span class="json-warm">{
   "status": 403,
   "error": "INVALID_KEY",
   "message": "Very close. A reference and this thing are nearly synonymous in C.",
-  "hint": "In C, it is declared with *. One word."
+  "hint": "In C, it is declared with *. One word, CMON DUDE."
 }</span>`,
 
     "linked": `<span class="json-warm">{
@@ -479,7 +480,7 @@
 
     "pointer": `<span class="json-gold">{
   "status": 200,
-  "message": "ACCESS GRANTED — SCROLL FRAGMENT IV RECOVERED",
+  "message": "ACCESS GRANTED: SCROLL FRAGMENT IV RECOVERED",
   "fragment": {
     "letter": "O",
     "position": 4,
