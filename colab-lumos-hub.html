@@ -1258,7 +1258,13 @@
     if (challenge) {
       challenge.unlocked = !challenge.unlocked;
       buildChallenges();
-      showAdminPanel(); 
+      
+      //updating panels
+      const panel = document.getElementById('admin-panel');
+      if (panel) {
+        panel.remove();
+      }
+      showAdminPanel();
     }
   }
 
