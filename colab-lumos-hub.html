@@ -51,7 +51,7 @@
       pointer-events: none; z-index: 1;
     }
 
-    /* ── WRAPPER ── */
+    /* ──wrap── */
     .wrapper {
       position: relative; z-index: 2;
       min-height: 100vh;
@@ -59,7 +59,7 @@
       padding: 60px 20px 80px;
     }
 
-    /* ── HEADER ── */
+    /* ──header── */
     .crest {
       text-align: center;
       margin-bottom: 12px;
@@ -92,7 +92,7 @@
       margin-bottom: 10px;
     }
 
-    /* LETTER REVEAL cus we fancy */
+    /*revealing letters cus we fancy */
     .letter-row {
       display: flex;
       justify-content: center;
@@ -1134,30 +1134,52 @@
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbze5HhXadEP-HXkMSarCAxgLTlSDLeQuvhidpwYRO5shYUBqXggIG6KvZodT4VrFhSC/exec";
 
   async function fetchLeaderboard() {
-  if (!APPS_SCRIPT_URL) return;
-  //this one i need to update global leaderboard with za fresh data
-  try {
-    const response = await fetch(APPS_SCRIPT_URL);
-    const data = await response.json();
+    if (!APPS_SCRIPT_URL) return;
     
-    if (data.leaderboard) {
-      // Clear and rebuild LEADERBOARD array
-      LEADERBOARD.length = 0;
-      data.leaderboard.forEach(item => {
-        LEADERBOARD.push({
-          house: item.house,
-          glyph: "",
-          completed: item.completed
-        });
-      });
+    try {
+      const response = await fetch(APPS_SCRIPT_URL);
+      const data = await response.json();
       
-      // Force rebuild
-      buildLeaderboard();
+      if (data.leaderboard) {
+        //update lb
+        LEADERBOARD.length = 0;
+        data.leaderboard.forEach(item => {
+          LEADERBOARD.push({
+            house: item.house,
+            glyph: "",
+            completed: item.completed
+          });
+        });
+        buildLeaderboard();
+
+        //update house letters
+        if (selectedHouse) {
+          const myHouse = data.leaderboard.find(h => h.house.toLowerCase() === selectedHouse.toLowerCase());
+          if (myHouse && myHouse.challenges) {
+            completedChallenges = [];
+            if (myHouse.challenges.c1) completedChallenges.push(1);
+            if (myHouse.challenges.c2) completedChallenges.push(2);
+            if (myHouse.challenges.c3) completedChallenges.push(3);
+            if (myHouse.challenges.c4) completedChallenges.push(4);
+            if (myHouse.challenges.c5) completedChallenges.push(5);
+            updateLetterSlots(); // #reveal fancy letters ouu
+          }
+        }
+      }
+
+      //googlesheet update
+      if (data.unlocked) {
+        CHALLENGES[0].unlocked = data.unlocked.c1;
+        CHALLENGES[1].unlocked = data.unlocked.c2;
+        CHALLENGES[2].unlocked = data.unlocked.c3;
+        CHALLENGES[3].unlocked = data.unlocked.c4;
+        CHALLENGES[4].unlocked = data.unlocked.c5;
+        buildChallenges(); 
+      }
+    } catch (err) {
+      console.error('Leaderboard fetch error:', err);
     }
-  } catch (err) {
-    console.error('Leaderboard fetch error:', err);
   }
-}
       
   // Auto-refresh every 10 seconds
   setInterval(fetchLeaderboard, 10000);
